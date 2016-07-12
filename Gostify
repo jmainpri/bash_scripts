@@ -1,0 +1,6 @@
+#dSAFER -dBATCH -dNOPAUSE -sDEVICE=pnggrey
+gs -sDEVICE=pdfwrite -dUseCIEColor -dCompatibilityLevel=1.4 -dPDFSETTINGS=/screen -dNOPAUSE -dQUIET -dBATCH -sOutputFile=$1_small.pdf $1
+#screen
+#printer
+#prepress
+#default
