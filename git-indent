@@ -1,0 +1,3 @@
+# Will apply clang file formating to all files
+# that are modifed at that point in time
+git clang-format -f --style=file
