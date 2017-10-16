@@ -5,5 +5,5 @@ FILENAME=${1%.*}
 echo "Create file: $MAKE_DIR/Makefile !"
 cp $SCRIPT_DIR/latex_makefile $MAKE_DIR/Makefile
 echo "Set paper name : $FILENAME !"
-sed -i -e 's/dummy_name/'"$FILENAME"'/g' Makefile
+sed -e 's/dummy_name/'"$FILENAME"'/g' Makefile
 echo "Done."
