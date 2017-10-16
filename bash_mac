@@ -1,3 +1,4 @@
+#!/bin/bash
 export PS1="\[\033[36m\]\u\[\033[m\]@\[\033[32m\]\h:\[\033[33;1m\]\w\[\033[m\]\$ "
 export CLICOLOR=1
 export LSCOLORS=ExFxBxDxCxegedabagacad
@@ -10,6 +11,7 @@ CATKIN_WS=${HOME}/Dropbox/catkin_ws_research/workspace/
 alias cdrieef="cd ${CATKIN_WS}src/catkin/ioc/rieef-uw/"
 alias cdweb="cd ${HOME}/Dropbox/documents_perso/Website/humans-robots-motion"
 alias cdmath="cd ${HOME}/Documents/mlr_documents/teaching/17-Math"
+alias cdbashscripts="cd ${HOME}/bash_scripts"
 
 # ---------------------------------
 function set_simple_ps1 {
