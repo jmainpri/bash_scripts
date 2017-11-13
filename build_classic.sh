@@ -6,4 +6,4 @@ else
 fi
 
 echo "build with : ${nb_jobs} job(s) !!!"
-catkin_make -j${nb_jobs} -DCMAKE_BUILD_TYPE=RelWithDebInfo
+catkin_make -j${nb_jobs} -DCMAKE_BUILD_TYPE=RelWithDebInfo tests
