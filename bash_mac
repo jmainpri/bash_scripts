@@ -1,0 +1,33 @@
+#!/bin/bash
+# -------- Terminal settings ---------------------------------------------------
+PS_USER_MACHINE="\[\033[36m\]\u\[\033[m\]@\[\033[32m\]"
+export PS1="${PS_USER_MACHINE}\h:\[\033[33;1m\]\w\[\033[m\]\$ "
+export CLICOLOR=1
+export LSCOLORS=ExFxBxDxCxegedabagacad
+
+function set_simple_ps1 {
+    # export PS1="\u@\h [\t]> " 
+    export PS1="${PS_USER_MACHINE}\h:\[\033[33;1m\]\W\[\033[m\]\$ "
+}
+# ------------ Aliases ---------------------------------------------------------
+# alias ls='ls -GFh'
+alias e="emacs -nw"
+alias ll="ls -la"
+alias text="open /Applications/TextEdit.app"
+CATKIN_WS=${HOME}/Dropbox/catkin_ws_research/workspace/
+alias cdrieef="cd ${CATKIN_WS}src/catkin/ioc/rieef-uw/"
+alias cdweb="cd ${HOME}/Dropbox/documents_perso/Website/humans-robots-motion"
+alias cdmath="cd ${HOME}/Documents/mlr_documents/teaching/17-Math"
+alias cdbashscripts="cd ${HOME}/bash_scripts"
+
+# ------------ Start SSH Agent -------------------------------------------------
+if [ ! -S ~/.ssh/ssh_auth_sock ]; then
+  eval `ssh-agent`
+  ln -sf "$SSH_AUTH_SOCK" ~/.ssh/ssh_auth_sock
+fi
+export SSH_AUTH_SOCK=~/.ssh/ssh_auth_sock
+ssh-add -l | grep "The agent has no identities" && ssh-add
+
+# -------------- Path ----------------------------------------------------------
+export PATH="/Applications/Firefox.app/Contents/MacOS:${PATH}"
+export PATH="~/bash_scripts:${PATH}"
