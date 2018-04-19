@@ -1,0 +1,344 @@
+#!/bin/bash
+# ~/.bashrc: executed by bash(1) for non-login shells.
+# see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
+# for examples
+
+# echo "source .bashrc"
+# echo "empty path !!!"
+# echo "$PATH"
+export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+
+# return
+# If not running interactively, don't do anything
+[ -z "$PS1" ] && return
+export INTERACTIVE_SHELL=true
+if [ -z "$PS1" ] ; then
+    INTERACTIVE_SHELL=false
+    # RSS retrieve data thing.
+    # (if return is there, becarful this might break stuff...)
+    # return
+else
+    echo "INTERACTIVE_SHELL: $INTERACTIVE_SHELL"
+fi
+
+# don't put duplicate lines or lines starting with space in the history.
+# See bash(1) for more options
+HISTCONTROL=ignoreboth
+
+# append to the history file, don't overwrite it
+shopt -s histappend
+
+# for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
+HISTSIZE=1000
+HISTFILESIZE=2000
+
+# check the window size after each command and, if necessary,
+# update the values of LINES and COLUMNS.
+shopt -s checkwinsize
+
+# If set, the pattern "**" used in a pathname expansion context will
+# match all files and zero or more directories and subdirectories.
+#shopt -s globstar
+
+# make less more friendly for non-text input files, see lesspipe(1)
+[ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
+
+# set variable identifying the chroot you work in (used in the prompt below)
+if [ -z "$debian_chroot" ] && [ -r /etc/debian_chroot ]; then
+    debian_chroot=$(cat /etc/debian_chroot)
+fi
+
+# set a fancy prompt (non-color, unless we know we "want" color)
+case "$TERM" in
+    xterm-color) color_prompt=yes;;
+esac
+
+# uncomment for a colored prompt, if the terminal has the capability; turned
+# off by default to not distract the user: the focus in a terminal window
+# should be on the output of commands, not on the prompt
+#force_color_prompt=yes
+
+if [ -n "$force_color_prompt" ]; then
+    if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
+	# We have color support; assume it's compliant with Ecma-48
+	# (ISO/IEC-6429). (Lack of such support is extremely rare, and such
+	# a case would tend to support setf rather than setaf.)
+	color_prompt=yes
+    else
+	color_prompt=
+    fi
+fi
+
+if [ "$color_prompt" = yes ]; then
+    PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
+else
+    PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
+fi
+unset color_prompt force_color_prompt
+
+# If this is an xterm set the title to user@host:dir
+case "$TERM" in
+xterm*|rxvt*)
+    PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h: \w\a\]$PS1"
+    ;;
+*)
+    ;;
+esac
+
+# enable color support of ls and also add handy aliases
+if [ -x /usr/bin/dircolors ]; then
+    test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+    alias ls='ls --color=auto'
+    #alias dir='dir --color=auto'
+    #alias vdir='vdir --color=auto'
+
+    alias grep='grep --color=auto'
+    alias fgrep='fgrep --color=auto'
+    alias egrep='egrep --color=auto'
+fi
+
+# some more ls aliases
+alias ll='ls -alF'
+alias la='ls -A'
+alias l='ls -CF'
+alias e='emacs -nw'
+
+# Add an "alert" alias for long running commands.  Use like so:
+#   sleep 10; alert
+alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
+
+# Alias definitions.
+# You may want to put all your additions into a separate file like
+# ~/.bash_aliases, instead of adding them here directly.
+# See /usr/share/doc/bash-doc/examples in the bash-doc package.
+
+if [ -f ~/.bash_aliases ]; then
+    . ~/.bash_aliases
+fi
+
+# THIS IS WHAT MADE THE COMPLETION FUCKED UP !!!!!!
+# enable programmable completion features (you don't need to enable
+# this, if it's already enabled in /etc/bash.bashrc and /etc/profile
+# sources /etc/bash.bashrc).
+# if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
+#     . /etc/bash_completion
+# fi
+
+function set_simple_ps1 {
+    # export PS1="\u@\h [\t]> "
+    export PS1="\u@\h [\W]$ "
+}
+
+# Sets globally numbers in the us format
+export LC_NUMERIC="en_US.UTF-8" # for move3d ... (breaks ros in container)
+export EDITOR="emacs -nw"
+export PYTHONPATH=""
+export PATH=$HOME/bin:$PATH
+export PATH=$HOME/bash_scripts:$PATH
+export SSH_AUTH_SOCK=0
+# export PATH=/usr/local/jim_local/Dropbox/catkin_ws/src/
+# motion-optimization/docker/scripts:$PATH
+# export PATH=$HOME/bash_scripts:$PATH
+
+# GET PROFILE !!!
+# relies on the fact that the name of the terminal
+# window is one of the cases below
+# it also depends on xdotool
+# to work you need to edit the profiles and set 
+# in Title and Command to keep initial title
+
+# ------------------------------------------------------
+# ------------ ROS -------------------------------------
+# profile_id=RieMO
+# echo "PROFILE_ID : $profile_id"
+if [ -z $profile_id ]; then
+    profile_id=Apollo
+    # Check why this does not work anymore
+    profile_id=$(xdotool getactivewindow getwindowname)
+fi
+if [ -z $profile_id ]; then
+    profile_id=RieMO
+    # profile_id=Move3D
+fi
+
+echo "profile_id : $profile_id"
+export DROPBOX_DIR=/usr/local/jim_dropbox/Dropbox
+
+case "$profile_id" in
+
+    Move3D )
+        export ROS_CATKIN_WS=$DROPBOX_DIR/move3d/catkin_ws_move3d
+        source /opt/ros/indigo/setup.bash
+	;;
+#    RieMO )
+#        echo "source riemo"
+#        export PATH=$DROPBOX_DIR/catkin_ws/amd-clmc/scripts/:$PATH
+#        export ROS_CATKIN_WS=$DROPBOX_DIR/catkin_ws/workspace
+#        source /opt/ros/indigo/setup.bash
+#        ;;
+    Apollo )
+        echo "source apollo"
+        APOLLO_WS=$DROPBOX_DIR/mpi_system_apollo/mpi_system_apollo_14_04/
+        export PATH=$APOLLO_WS/amd-clmc/scripts/:$PATH
+        export ROS_CATKIN_WS=$APOLLO_WS/workspace
+        source /opt/ros/indigo/setup.bash
+        ;;
+    RieMO )
+    #Riemann )
+        echo "source riemann"
+        export ROS_CATKIN_WS=$DROPBOX_DIR/catkin_ws_research/workspace
+        source /opt/ros/indigo/setup.bash
+        ;;
+esac
+
+if $INTERACTIVE_SHELL ;then
+    echo "Profile is : $profile_id"
+    echo "To change profile -> profile_id=Move3D ; source ~/.bashrc"
+fi
+
+if [ "$(hostname)" == "ubuntu1204-development-${USER}" ]; then
+
+        # echo "on ubuntu1204-development !!!"
+        export LC_NUMERIC="C" # for Move3D number saving ... breaks in 12.04
+        # setterm -term linux -back blue -fore white
+        source /opt/ros/groovy/setup.bash
+        # export ROS_CATKIN_WS=${HOME}/catkin/catkin_ws_1204_container
+        # export ROS_CATKIN_WS=${HOME}/catkin/catkin_ws_1204_jan
+        export ROS_CATKIN_WS=${HOME}/catkin/catkin_ws_1204_sab/workspace
+        export ROS_HOSTNAME=$(ip addr | grep 'state UP' -A2 | tail -n1 | awk '{print $2}' | cut -f1  -d'/')
+        export ROS_MASTER_URI=http://${ROS_HOSTNAME}:11311/
+fi
+
+# export ROS_CATKIN_WS=$HOME/catkin_ws_sl
+# export ROS_CATKIN_WS=$HOME/catkin_ws_octo
+# echo "Source catkin ws : $ROS_CATKIN_WS"
+source $ROS_CATKIN_WS/devel/setup.bash
+
+# ------------------------------------------------------
+# This path sets the local to the account path where
+# to look for libraries. This has to be set after the ROS
+# source /opt/ros/indigo/setup.bash which resets the CMAKE_PREFIX_PATH.
+# when /devel/setup.bash is not found.
+export CMAKE_PREFIX_PATH="~/workspace/install:${CMAKE_PREFIX_PATH}"
+
+# ------------------------------------------------------
+# ------------ Matlab ----------------------------------
+export PATH=$HOME/R2014a/bin/:$PATH
+
+# ------------------------------------------------------
+# ------------ Qt --------------------------------------
+
+# export PATH=$HOME/qtcreator-3.5.0/bin:$PATH
+# export PATH=$HOME/qtcreator-3.3.0/bin:$PATH
+export PATH=$HOME/qtcreator-3.6.0/bin:$PATH
+# export PATH=$HOME/qtcreator-4.0.0/bin:$PATH
+
+# ------------------------------------------------------
+# ------------ Python ----------------------------------
+
+# export PYTHONPATH=$ROS_CATKIN_WS/src/hrics-or-rafi/python_module:$PYTHONPATH
+# export PYTHONPATH=/usr/local/lib/python2.7/dist-packages/openravepy:$PYTHONPATH
+
+# ------------------------------------------------------
+# ------------ Java ------------------------------------
+
+
+# ------------------------------------------------------
+# ------------ Move3D ----------------------------------
+if [ "$profile_id" == "Move3D" ]; then
+    # echo "SET MOVE3D VARIABLES"
+    export PYTHONPATH=$MOVE3D_PYTHON_DIR:$PYTHONPATH
+    export MOVE3D_INSTALL_DIR=$HOME/move3d_bin/move3d/install
+    export HOME_MOVE3D=$DROPBOX_DIR/move3d/libmove3d
+    export PKG_CONFIG_PATH=$MOVE3D_INSTALL_DIR/lib/pkgconfig:$PKG_CONFIG_PATH
+    export PATH=$MOVE3D_INSTALL_DIR/bin:$PATH
+    export LD_LIBRARY_PATH=$MOVE3D_INSTALL_DIR/lib:$LD_LIBRARY_PATH
+    export MOVE3D_TMP_FILES=$HOME/move3d_tmp
+    export MOVE3D_PARAM_FILES=$HOME_MOVE3D/../move3d-launch/parameters
+    export MOVE3D_TEST_ENVIRONMENT=
+fi
+
+# ------------------------------------------------------
+# ------------ Cuda ------------------------------------
+
+# export PATH=/usr/local/cuda/bin:$PATH
+# export LD_LIBRARY_PATH=/usr/local/cuda/lib:$LD_LIBRARY_PATH
+
+export PATH=/usr/local/cuda-7.5/bin:$PATH
+export LD_LIBRARY_PATH=/usr/local/cuda-7.5/lib64:$LD_LIBRARY_PATH
+export OPENBLAS_NUM_THREADS=1
+. /home/jim/torch/install/bin/torch-activate
+
+# Export CPATH
+# export CPATH="" # becarful clearing CPATH breaks compilation on ROS projects that are not clean
+
+#------------- Docker --------------
+# export PATH=/Network/Servers/davinci/Volumes/davinci/jmainpri/catkin_ws/src/motion-optimization/docker/scripts:$PATH
+# export PATH=/usr/local/jim_local/Dropbox/catkin_ws/workspace/src/motion-optimization/docker/scripts:$PATH
+
+set_docker_ros_master() {
+  IP=$(docker inspect --format '{{ .NetworkSettings.IPAddress }}' "ubuntu1204-development-${USER}")
+  export ROS_MASTER_URI=http://${IP}:11311/
+}
+
+#------------- Aliases -------------
+alias cddbox="cd $DROPBOX_DIR"
+alias cdmove3d="cd $DROPBOX_DIR/move3d/move3d-launch/"
+alias cdmo="cd $DROPBOX_DIR/catkin_ws/src/motion-optimization"
+alias cdexp="cd /usr/local/share/Experiments"
+alias e="emacs -nw"
+alias sublime="$HOME/workspace/Sublime_Text_2/sublime_text"
+alias cw="cd $ROS_CATKIN_WS/.."
+alias cddeep="cd $ROS_CATKIN_WS/src/catkin/manipulation/deep_learning"
+alias cditer="roscd rieef_data/deep_learning/thousand_environments/iterations"
+
+#------------- Start SSH Agent -----
+if [ ! -S ~/.ssh/ssh_auth_sock ]; then
+  eval `ssh-agent`
+  ln -sf "$SSH_AUTH_SOCK" ~/.ssh/ssh_auth_sock
+fi
+export SSH_AUTH_SOCK=~/.ssh/ssh_auth_sock
+ssh-add -l | grep "The agent has no identities" && ssh-add
+
+# Loging
+# to setup an ssh key on a different machine:
+# cat ~/.ssh/id_rsa.pub | ssh jim@whedon 'cat >> .ssh/authorized_keys'
+alias klee="ssh jim@10.32.25.221"
+alias chopin="ssh jim@10.32.31.109"
+alias whedon="ssh jim@whedon"
+alias cesar="ssh jim@10.32.27.195"
+
+#----- Activate DLang -----
+source ~/dlang/dmd-2.071.2/activate
+
+#----- MPI system Apollo --
+if [ "$profile_id" == "Apollo" ]; then
+
+    export WS=$DROPBOX_DIR/mpi_system_apollo
+
+    # In the following we assume that the directory structure was setup as described above.
+    echo "####################################################################"
+    echo "# create RSS SYS shortcuts"
+    RSS_ROB="${WS}/mpi_system_apollo_robot/workspace/src/catkin/mpi_system_apollo/scripts"
+    if [[ -d ${RSS_ROB} ]];then
+        echo "# rss_rob is defined"
+        function rss_rob(){
+            cd ${RSS_ROB}
+        }
+    fi
+      
+    RSS_PAT="${WS}/mpi_system_apollo_14_04/workspace/src/catkin/mpi_system_apollo/scripts"
+    if [[ -d ${RSS_PAT} ]];then
+        echo "# rss_pat is defined"
+        function rss_pat(){
+            cd ${RSS_PAT}
+        }
+    fi
+
+    echo "source pat !!!"
+    # source the workspace.
+    rss_pat
+    # source source_mondrian.sh
+    set_simple_ps1
+
+fi
