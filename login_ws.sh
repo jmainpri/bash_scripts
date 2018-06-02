@@ -1,1 +1,1 @@
-ssh -Y mainprjm@ipvslogin.informatik.uni-stuttgart.de
+ssh -Y jim@mlrws01.informatik.uni-stuttgart.de
