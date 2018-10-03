@@ -42,5 +42,19 @@ export PKG_CONFIG_PATH=/Users/jmainpri/workspace/move3d/move3d-launch/../install
 export PATH=/Users/jmainpri/workspace/move3d/move3d-launch/../install/bin:$PATH
 export DYLD_LIBRARY_PATH=/Users/jmainpri/workspace/move3d/move3d-launch/../install/lib:$DYLD_LIBRARY_PATH
 
+#------------- Pinocchio ------------------------------------------------------
+# export PATH=/usr/local/bin:$PATH
+# export PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:$PKG_CONFIG_PATH
+# export LD_LIBRARY_PATH=/usr/local/lib:$LD_LIBRARY_PATH
+# export PYTHONPATH=/usr/local/lib/python2.7/site-packages:$PYTHONPATH
+
 #------------- Conda ----------------------------------------------------------
-source activate conda-env
+export PATH=~/anaconda2/bin:$PATH
+# source activate conda-env
+source activate env-pytorch
+
+# TEST PYRIEEF
+# conda create --name env-pyrieef
+# source activate env-pyrieef
+# source deactivate env-pyrieef
+# conda remove -n env-pyrieef --all
