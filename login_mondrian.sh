@@ -1,2 +1,2 @@
-ssh jim@mondrian.is.localnet
+ssh -Y jim@mondrian.is.localnet
 
