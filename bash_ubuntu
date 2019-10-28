@@ -23,6 +23,8 @@ if [ -x /usr/bin/dircolors ]; then
     alias egrep='egrep --color=auto'
 fi
 
+# ------------ DART -----------------------------------------------------------
+export BUILD_WITH_DART=1
 
 # ------------ Aliases --------------------------------------------------------
 # alias ls='ls -GFh'
@@ -50,4 +52,4 @@ ssh-add -l | grep "The agent has no identities" && ssh-add
 export PATH="~/bash_scripts:${PATH}"
 
 # ------------ ROS -----------------------------------------------------------
-source /opt/ros/indigo/setup.bash
+source /opt/ros/melodic/setup.bash
