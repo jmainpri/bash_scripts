@@ -46,6 +46,10 @@ export EDITOR="$VISUAL"
 # -------------- Printers (U. Stuttgart)---------------------------------------
 export CUPS_USER=mainprjm
 
+# -------------- UI Scale -----------------------------------------------------
+export QT_SCALE_FACTOR=1.7
+alias spotify="/usr/bin/spotify --force-device-scale-factor=1.8"
+
 # ------------ Start SSH Agent ------------------------------------------------
 if [ ! -S ~/.ssh/ssh_auth_sock ]; then
   eval `ssh-agent`
@@ -125,10 +129,10 @@ fi
 echo "ROS_CATKIN_WS : ${ROS_CATKIN_WS}"
 
 # ------------ pinocchio -------------------------------------------------------
-export PATH=/usr/local/bin:$PATH
-export PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:$PKG_CONFIG_PATH
-export LD_LIBRARY_PATH=/usr/local/lib:$LD_LIBRARY_PATH
-export PYTHONPATH=/usr/local/lib/python2.7/site-packages:$PYTHONPATH
+# export PATH=/usr/local/bin:$PATH
+# export PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:$PKG_CONFIG_PATH
+# export LD_LIBRARY_PATH=/usr/local/lib:$LD_LIBRARY_PATH
+# export PYTHONPATH=/usr/local/lib/python2.7/site-packages:$PYTHONPATH
 
 # . /home/jim/torch/install/bin/torch-activate
 
