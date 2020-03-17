@@ -36,11 +36,13 @@ export PATH="~/bash_scripts:${PATH}"
 export CUPS_USER=mainprjm
 
 #------------- Move3D ---------------------------------------------------------
-export MOVE3D_INSTALL_DIR=/Users/jmainpri/workspace/move3d/move3d-launch/../install
-export HOME_MOVE3D=/Users/jmainpri/workspace/move3d/move3d-launch/../libmove3d
-export PKG_CONFIG_PATH=/Users/jmainpri/workspace/move3d/move3d-launch/../install/lib/pkgconfig:$PKG_CONFIG_PATH
-export PATH=/Users/jmainpri/workspace/move3d/move3d-launch/../install/bin:$PATH
-export DYLD_LIBRARY_PATH=/Users/jmainpri/workspace/move3d/move3d-launch/../install/lib:$DYLD_LIBRARY_PATH
+# This is added automatically when installed.
+MOVE3D_LAUNCH_DIR=${HOME}/workspace/move3d/move3d-launch
+export MOVE3D_INSTALL_DIR=${MOVE3D_LAUNCH_DIR}/../install
+export HOME_MOVE3D=${MOVE3D_LAUNCH_DIR}/../libmove3d
+export PKG_CONFIG_PATH=${MOVE3D_LAUNCH_DIR}/../install/lib/pkgconfig:$PKG_CONFIG_PATH
+export PATH=${MOVE3D_LAUNCH_DIR}/../install/bin:$PATH
+export DYLD_LIBRARY_PATH=${MOVE3D_LAUNCH_DIR}/../install/lib:$DYLD_LIBRARY_PATH
 
 #------------- Pinocchio ------------------------------------------------------
 export PATH=/usr/local/bin:$PATH

@@ -1,4 +1,6 @@
 #!/bin/bash
+
+
 # -------- Terminal settings ---------------------------------------------------
 PS_USER_MACHINE="\[\033[36m\]\u\[\033[m\]@\[\033[32m\]"
 COLOR_WORKING_DIR="\033[95;38;5;214m"
@@ -23,6 +25,26 @@ if [ -x /usr/bin/dircolors ]; then
     alias egrep='egrep --color=auto'
 fi
 
+# ------------ Text Size / UI Scale---------------------------------------------
+
+SUBLIME_SETTINGS=~/.config/sublime-text-3/Packages/User/Preferences.sublime-settings
+
+function set_normal_text {
+    export QT_SCALE_FACTOR=1
+    gsettings set org.gnome.desktop.interface text-scaling-factor 1
+    alias spotify="/usr/bin/spotify --force-device-scale-factor=1.5"
+    sed -i 's/\"ui_scale\": 1.7/\"ui_scale\": 1.0/g' ${SUBLIME_SETTINGS}
+}
+function set_large_text {
+    export QT_SCALE_FACTOR=1.5
+    gsettings set org.gnome.desktop.interface text-scaling-factor 1.5
+    sed -i 's/\"ui_scale\": 1.0/\"ui_scale\": 1.7/g' ${SUBLIME_SETTINGS}
+}
+function set_big_text {
+    export QT_SCALE_FACTOR=1.7
+    alias spotify="/usr/bin/spotify --force-device-scale-factor=1.8"
+}
+
 # ------------ Aliases --------------------------------------------------------
 # alias ls='ls -GFh'
 alias open="evince"
@@ -33,11 +55,16 @@ alias cdrieef="cd ${CATKIN_WS}src/catkin/ioc/rieef-uw/"
 alias cdweb="cd ${HOME}/Dropbox/documents_perso/Website/humans-robots-motion"
 alias cdmath="cd ${HOME}/Documents/mlr_documents/teaching/17-Math"
 alias cdbashscripts="cd ${HOME}/bash_scripts"
+alias cdtarrieef="cd /home/jim/software/catkin_ws_mpi_system_baxter/workspace/src/catkin/manipulation/riemo_electrical_fields/scripts"
 
-# -------------- Printers (U. Stuttgart)---------------------------------------
+# -------- Default editor  - ---------------------------------------------------
+export VISUAL="emacs -nw"
+export EDITOR="$VISUAL"
+
+# -------------- Printers (U. Stuttgart)----------------------------------------
 export CUPS_USER=mainprjm
 
-# ------------ Start SSH Agent ------------------------------------------------
+# ------------ Start SSH Agent -------------------------------------------------
 if [ ! -S ~/.ssh/ssh_auth_sock ]; then
   eval `ssh-agent`
   ln -sf "$SSH_AUTH_SOCK" ~/.ssh/ssh_auth_sock
@@ -45,25 +72,90 @@ fi
 export SSH_AUTH_SOCK=~/.ssh/ssh_auth_sock
 ssh-add -l | grep "The agent has no identities" && ssh-add
 
-# -------------- Path --------------------------------------------------------
+# -------------- Path ----------------------------------------------------------
 export PATH="~/bash_scripts:${PATH}"
 
-# ------------ ROS -----------------------------------------------------------
+# ------------ HRM_UTILS -------------------------------------------------------
+source ~/hrmdock/hrmdock.sh
+
+# ------------ ROS -------------------------------------------------------------
+# export PATH="/home/jim/anaconda2/bin:$PATH"
+# source activate env-pytorch
+# source .anacond_ros
+# source /opt/ros/indigo/setup.bash
 source /opt/ros/melodic/setup.bash
 
 # ------------ DART -----------------------------------------------------------
 export BUILD_WITH_DART=1
 
-# ------------ Text Size ------------------------------------------------------
-SUBLIME_SETTINGS=~/.config/sublime-text-3/Packages/User/Preferences.sublime-settings
-function set_large_text {
-    export QT_SCALE_FACTOR=1.5
-    gsettings set org.gnome.desktop.interface text-scaling-factor 1.5
-    sed -i 's/\"ui_scale\": 1.0/\"ui_scale\": 1.7/g' ${SUBLIME_SETTINGS}
-}
-function set_normal_text {
-    export QT_SCALE_FACTOR=1
-    gsettings set org.gnome.desktop.interface text-scaling-factor 1
-    alias spotify="/usr/bin/spotify --force-device-scale-factor=1.5"
-    sed -i 's/\"ui_scale\": 1.7/\"ui_scale\": 1.0/g' ${SUBLIME_SETTINGS}
-}
+
+# ------------ MOTION CAPTURE --------------------------------------------------
+export DATA_DIR=/home/jim/software/catkin_ws_research/workspace/src/catkin/human/motion-prediction/data/mocap-mlr
+
+# ------------ Research --------------------------------------------------------
+export WS=${HOME}/software/
+
+# ------------ ROS Environment -------------------------------------------------
+MPI_SYSTEM=false
+if [ "$MPI_SYSTEM" = true ] ; then
+    # APOLLO_WS=${HOME}/software/mpi_system_baxter_with_lula/
+    APOLLO_WS=${WS}/mpi_system_apollo_14_04
+    BAXTER_WS=${WS}/catkin_ws_mpi_system_baxter
+    export ROS_CATKIN_WS=$BAXTER_WS/workspace
+
+    # In the following we assume that the directory structure was setup as described above.
+    echo "####################################################################"
+    echo "# create RSS SYS shortcuts"
+
+    RSS_PAT="${APOLLO_WS}/workspace/src/catkin/mpi_system_apollo/scripts"
+    if [[ -d ${RSS_PAT} ]];then
+        echo "# rss_pat is defined"
+        function rss_pat(){
+            cd ${RSS_PAT}
+        }
+    fi
+
+    LULA_API="${ROS_CATKIN_WS}/src/catkin/lula_external/lula_api/scripts"
+    if [[ -d ${LULA_API} ]];then
+        echo "# lula_api is defined"
+        function lula_api(){
+            cd ${LULA_API}
+        }
+    fi
+
+    RSS_BAX="${ROS_CATKIN_WS}/src/catkin/mpi_system_baxter/scripts"
+    if [[ -d ${RSS_BAX} ]];then
+        echo "# ws_baxter is defined"
+        function ws_baxter(){
+    		cd ${RSS_BAX}
+    		source ${ROS_CATKIN_WS}/devel/setup.bash
+        }
+    fi
+
+    # Baxter robot ip: 129.69.216.201
+    # Baxter robot hostname: thecount.local
+    function set_baxter_ros_master(){
+          export ROS_MASTER_URI=http://thecount.local:11311
+    }
+
+    echo "source baxter !!!"
+    # ws_baxter
+    # source source_localhost.sh
+    set_simple_ps1
+else
+    echo "No ros defined"
+    # export ROS_CATKIN_WS=${WS}/catkin_ws_research/workspace
+    # source ${ROS_CATKIN_WS}/devel/setup.bash
+fi
+echo "ROS_CATKIN_WS : ${ROS_CATKIN_WS}"
+
+# ------------ pinocchio -------------------------------------------------------
+# export PATH=/usr/local/bin:$PATH
+# export PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:$PKG_CONFIG_PATH
+# export LD_LIBRARY_PATH=/usr/local/lib:$LD_LIBRARY_PATH
+# export PYTHONPATH=/usr/local/lib/python2.7/site-packages:$PYTHONPATH
+
+# . /home/jim/torch/install/bin/torch-activate
+
+# added by Anaconda2 installer
+# export PATH="/home/jim/anaconda2/bin:$PATH"
