@@ -23,9 +23,6 @@ if [ -x /usr/bin/dircolors ]; then
     alias egrep='egrep --color=auto'
 fi
 
-# ------------ DART -----------------------------------------------------------
-export BUILD_WITH_DART=1
-
 # ------------ Aliases --------------------------------------------------------
 # alias ls='ls -GFh'
 alias open="evince"
@@ -53,3 +50,20 @@ export PATH="~/bash_scripts:${PATH}"
 
 # ------------ ROS -----------------------------------------------------------
 source /opt/ros/melodic/setup.bash
+
+# ------------ DART -----------------------------------------------------------
+export BUILD_WITH_DART=1
+
+# ------------ Text Size ------------------------------------------------------
+SUBLIME_SETTINGS=~/.config/sublime-text-3/Packages/User/Preferences.sublime-settings
+function set_large_text {
+    export QT_SCALE_FACTOR=1.5
+    gsettings set org.gnome.desktop.interface text-scaling-factor 1.5
+    sed -i 's/\"ui_scale\": 1.0/\"ui_scale\": 1.7/g' ${SUBLIME_SETTINGS}
+}
+function set_normal_text {
+    export QT_SCALE_FACTOR=1
+    gsettings set org.gnome.desktop.interface text-scaling-factor 1
+    alias spotify="/usr/bin/spotify --force-device-scale-factor=1.5"
+    sed -i 's/\"ui_scale\": 1.7/\"ui_scale\": 1.0/g' ${SUBLIME_SETTINGS}
+}
