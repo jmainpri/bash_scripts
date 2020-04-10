@@ -1,31 +1,28 @@
-define make_pdf
-    echo x | pdflatex $(1)
-	bibtex $(1)
-	echo x | pdflatex $(1)
-	echo x | pdflatex $(1)
-endef
-
-define clean_pdf
-	rm -f $(1).aux 
-	rm -f $(1).dvi
-	rm -f $(1).bbl
-	rm -f $(1).blg
-	rm -f $(1).log
-	rm -f $(1).out
-	rm -f $(1).pdf
-	rm -f $(1).synctex.gz
-	rm -f *~
-endef
-
-# ------------------------------------------------------------------------------
-# Full paper definitions
-# ------------------------------------------------------------------------------
-
-PAPER=dummy_name
+PAPER = dummy_name
+OS = $(shell uname)
+ifeq ($(OS),Darwin)
+	VIEWER=open
+endif
+ifeq ($(OS),Linux)
+	VIEWER=evince
+endif
 
 make:
-	$(call make_pdf, $(PAPER))
+	echo x | pdflatex $(PAPER)
+	echo x | pdflatex $(PAPER)
+
 clean:
-	$(call clean_pdf, $(PAPER))
+	rm -f $(PAPER).aux 
+	rm -f $(PAPER).dvi
+	rm -f $(PAPER).bbl
+	rm -f $(PAPER).blg
+	rm -f $(PAPER).log
+	rm -f $(PAPER).nav
+	rm -f $(PAPER).toc
+	rm -f $(PAPER).out 
+	rm -f $(PAPER).pdf
+	rm -f $(PAPER).synctex.gz
+	rm -f *~
+
 x:
-	open $(PAPER).pdf
+	$(VIEWER) $(PAPER).pdf
