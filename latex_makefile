@@ -1,4 +1,5 @@
 PAPER = dummy_name
+
 OS = $(shell uname)
 ifeq ($(OS),Darwin)
 	VIEWER=open
