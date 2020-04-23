@@ -10,6 +10,8 @@ endif
 
 make:
 	echo x | pdflatex $(PAPER)
+	bibtex $(PAPER)
+	echo x | pdflatex $(PAPER)
 	echo x | pdflatex $(PAPER)
 
 clean:
