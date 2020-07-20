@@ -27,7 +27,7 @@ clean:
 	rm -f $(PAPER).synctex.gz
 	rm -f *~
 
-arxiv:
+zip:
 	rm -rf arxiv.zip
 	rm -rf arxiv
 	mkdir arxiv
