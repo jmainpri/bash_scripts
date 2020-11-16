@@ -15,7 +15,8 @@ make:
 	echo x | pdflatex $(PAPER)
 
 clean:
-	rm -f $(PAPER).aux 
+	rm -f $(PAPER).aux
+	rm -f $(PAPER).snm
 	rm -f $(PAPER).dvi
 	rm -f $(PAPER).bbl
 	rm -f $(PAPER).blg
