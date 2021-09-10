@@ -20,6 +20,7 @@ clean:
 	rm -f $(PAPER).dvi
 	rm -f $(PAPER).bbl
 	rm -f $(PAPER).blg
+	rm -f $(PAPER).pre
 	rm -f $(PAPER).log
 	rm -f $(PAPER).nav
 	rm -f $(PAPER).toc

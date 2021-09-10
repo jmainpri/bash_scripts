@@ -48,11 +48,11 @@ export DYLD_LIBRARY_PATH=${MOVE3D_LAUNCH_DIR}/../install/lib:$DYLD_LIBRARY_PATH
 export PATH=/usr/local/bin:$PATH
 export PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:$PKG_CONFIG_PATH
 export LD_LIBRARY_PATH=/usr/local/lib:$LD_LIBRARY_PATH
-export PYTHONPATH=/usr/local/lib/python2.7/site-packages:$PYTHONPATH
+# export PYTHONPATH=/usr/local/lib/python2.7/site-packages:$PYTHONPATH
 
 #------------- Conda ----------------------------------------------------------
 
-# export PATH=~/anaconda2/bin:$PATH
+export PATH=~/anaconda2/bin:$PATH
 # source activate conda-env
 # source activate env-pytorch
 
@@ -62,11 +62,37 @@ export PYTHONPATH=/usr/local/lib/python2.7/site-packages:$PYTHONPATH
 # source deactivate env-pyrieef
 # conda remove -n env-pyrieef --all
 
+# python2 enviornment
+function ws_pyrieef2 {
+    # conda create -n env-pyrieef-py2 python=2.7 anaconda
+    source activate env-pyrieef-py2
+    # source deactivate env-pyrieef-py3
+    # conda remove -n env-pyrieef-py3 --all
+}
+
 # python3 enviornment
-# conda create -n env-pyrieef-py3 python=3.6 anaconda
-# source activate env-pyrieef-py3
-# source deactivate env-pyrieef-py3
-# conda remove -n env-pyrieef-py3 --all
+function ws_pyrieef3 {
+    # conda create -n env-pyrieef-py3 python=3.6 anaconda
+    source activate env-pyrieef-py3
+    # source deactivate env-pyrieef-py3
+    # conda remove -n env-pyrieef-py3 --all
+}
+
+# python2 enviornment
+function ws_pyrieef36 {
+    # conda create -n env-pyrieef-py36 python=3.6 anaconda
+    source activate env-pyrieef-py36
+    # source deactivate env-pyrieef-py36
+    # conda remove -n env-pyrieef-py36 --all
+}
+
+function ws_learch3 {
+    # conda create -n env-learch-py3 python=3.6 anaconda
+    source activate env-learch-py3
+    # source deactivate env-learch-py3
+    # conda remove -n env-learch-py3 --all
+    export PYTHONPATH=${HOME}/workspace/pedestrian-trajectories:${PYTHONPATH}
+}
 
 # conda create -n env-pyrieef-py3.5 python=3.5 anaconda
 # source activate env-pyrieef-py3.5
