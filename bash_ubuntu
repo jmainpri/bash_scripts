@@ -159,3 +159,8 @@ echo "ROS_CATKIN_WS : ${ROS_CATKIN_WS}"
 
 # added by Anaconda2 installer
 # export PATH="/home/jim/anaconda2/bin:$PATH"
+
+# ------------ bewego ----------------------------------------------------------
+export BEWEGO_INSTALL_PREFIX=${HOME}/workspace/bewego/dependencies/install
+export LD_LIBRARY_PATH=${BEWEGO_INSTALL_PREFIX}/lib:$LD_LIBRARY_PATH
+export LIBRARY_PATH=${BEWEGO_INSTALL_PREFIX}/lib/:$LIBRARY_PATH
