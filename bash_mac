@@ -50,6 +50,13 @@ export PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:$PKG_CONFIG_PATH
 export LD_LIBRARY_PATH=/usr/local/lib:$LD_LIBRARY_PATH
 # export PYTHONPATH=/usr/local/lib/python2.7/site-packages:$PYTHONPATH
 
+#------------- code  ----------------------------------------------------------  
+
+alias code="/Applications/Visual\ Studio\ Code.app/Contents/Resources/app/bin/code"
+function ws_bewego_remot {
+  code --remote ssh-remote+jim@mlrws01.informatik.uni-stuttgart.de /home/jim/software/bewego 
+}
+
 #------------- Conda ----------------------------------------------------------
 
 export PATH=~/anaconda2/bin:$PATH
