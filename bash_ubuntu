@@ -1,7 +1,11 @@
 #!/bin/bash
 
+# -------------- Path ----------------------------------------------------------
+
+export PATH="${HOME}/bash_scripts:${PATH}"
 
 # -------- Terminal settings ---------------------------------------------------
+
 PS_USER_MACHINE="\[\033[36m\]\u\[\033[m\]@\[\033[32m\]"
 COLOR_WORKING_DIR="\033[95;38;5;214m"
 export PS1="${PS_USER_MACHINE}\h:\[$COLOR_WORKING_DIR\]\w\[\033[m\]\$ "
@@ -28,6 +32,8 @@ fi
 # ------------ Text Size / UI Scale---------------------------------------------
 
 SUBLIME_SETTINGS=~/.config/sublime-text-3/Packages/User/Preferences.sublime-settings
+
+alias spotify="/usr/bin/spotify --force-device-scale-factor=1.8"
 
 function set_normal_text {
     export QT_SCALE_FACTOR=1
@@ -58,10 +64,15 @@ alias cdbashscripts="cd ${HOME}/bash_scripts"
 alias cdtarrieef="cd /home/jim/software/catkin_ws_mpi_system_baxter/workspace/src/catkin/manipulation/riemo_electrical_fields/scripts"
 
 # -------- Default editor  - ---------------------------------------------------
+
 export VISUAL="emacs -nw"
 export EDITOR="$VISUAL"
 
+# Problem with mac keyboard...
+numlockx off
+
 # -------------- Printers (U. Stuttgart)----------------------------------------
+
 export CUPS_USER=mainprjm
 
 # ------------ Start SSH Agent -------------------------------------------------
@@ -72,27 +83,35 @@ fi
 export SSH_AUTH_SOCK=~/.ssh/ssh_auth_sock
 ssh-add -l | grep "The agent has no identities" && ssh-add
 
-# -------------- Path ----------------------------------------------------------
-export PATH="~/bash_scripts:${PATH}"
-
 # ------------ HRM_UTILS -------------------------------------------------------
-source ~/hrmdock/hrmdock.sh
+
+if [ -d "$HOME/hrmdoc" ]; then
+  source ~/hrmdock/hrmdock.sh
+fi
 
 # ------------ ROS -------------------------------------------------------------
+
 # export PATH="/home/jim/anaconda2/bin:$PATH"
 # source activate env-pytorch
 # source .anacond_ros
 # source /opt/ros/indigo/setup.bash
-source /opt/ros/melodic/setup.bash
+
+if [ -d "/opt/ros/melodic" ]; then
+  source /opt/ros/melodic/setup.bash
+fi
+
 
 # ------------ DART -----------------------------------------------------------
+
 export BUILD_WITH_DART=1
 
 
 # ------------ MOTION CAPTURE --------------------------------------------------
+
 export DATA_DIR=/home/jim/software/catkin_ws_research/workspace/src/catkin/human/motion-prediction/data/mocap-mlr
 
 # ------------ Research --------------------------------------------------------
+
 export WS=${HOME}/software/
 
 # ------------ ROS Environment -------------------------------------------------
@@ -142,14 +161,16 @@ if [ "$MPI_SYSTEM" = true ] ; then
     # ws_baxter
     # source source_localhost.sh
     set_simple_ps1
+    echo "ROS_CATKIN_WS : ${ROS_CATKIN_WS}"
+
 else
-    echo "No ros defined"
+    echo "ROS not defined"
     # export ROS_CATKIN_WS=${WS}/catkin_ws_research/workspace
     # source ${ROS_CATKIN_WS}/devel/setup.bash
 fi
-echo "ROS_CATKIN_WS : ${ROS_CATKIN_WS}"
 
 # ------------ pinocchio -------------------------------------------------------
+
 # export PATH=/usr/local/bin:$PATH
 # export PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:$PKG_CONFIG_PATH
 # export LD_LIBRARY_PATH=/usr/local/lib:$LD_LIBRARY_PATH
@@ -161,6 +182,72 @@ echo "ROS_CATKIN_WS : ${ROS_CATKIN_WS}"
 # export PATH="/home/jim/anaconda2/bin:$PATH"
 
 # ------------ bewego ----------------------------------------------------------
+
 export BEWEGO_INSTALL_PREFIX=${HOME}/workspace/bewego/dependencies/install
 export LD_LIBRARY_PATH=${BEWEGO_INSTALL_PREFIX}/lib:$LD_LIBRARY_PATH
 export LIBRARY_PATH=${BEWEGO_INSTALL_PREFIX}/lib/:$LIBRARY_PATH
+
+#------------- Conda ----------------------------------------------------------
+
+# export PATH=~/anaconda3/bin:$PATH
+# source activate conda-env
+# source activate env-pytorch
+
+# TEST PYRIEEF
+# conda create --name env-pyrieef
+# source activate env-pyrieef
+# source deactivate env-pyrieef
+# conda remove -n env-pyrieef --all
+
+# python3 enviornment
+function ws_bewego {
+
+    export PATH=~/anaconda3/bin:$PATH
+
+    # >>> conda initialize >>>
+    # !! Contents within this block are managed by 'conda init' !!
+    __conda_setup="$('/lhome/jmainpr/anaconda3/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
+    if [ $? -eq 0 ]; then
+        eval "$__conda_setup"
+    else
+        if [ -f "/lhome/jmainpr/anaconda3/etc/profile.d/conda.sh" ]; then
+            . "/lhome/jmainpr/anaconda3/etc/profile.d/conda.sh"
+        else
+            export PATH="/lhome/jmainpr/anaconda3/bin:$PATH"
+        fi
+    fi
+    unset __conda_setup
+    # <<< conda initialize <<<
+
+    # conda create -n env-pyrieef-py3 python=3.6 anaconda
+    source activate bewego
+    # source deactivate env-pyrieef-py3
+    # conda remove -n env-pyrieef-py3 --all
+}
+
+# conda create -n env-pyrieef-py3.5 python=3.5 anaconda
+# source activate env-pyrieef-py3.5
+
+#------------- Miniconda ----------------------------------------------------------
+
+# python3 enviornment
+function ws_carla {
+
+    # >>> conda initialize >>>
+    # !! Contents within this block are managed by 'conda init' !!
+    __conda_setup="$('/lhome/jmainpr/miniconda3/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
+    if [ $? -eq 0 ]; then
+        eval "$__conda_setup"
+    else
+        if [ -f "/lhome/jmainpr/miniconda3/etc/profile.d/conda.sh" ]; then
+            . "/lhome/jmainpr/miniconda3/etc/profile.d/conda.sh"
+        else
+            export PATH="/lhome/jmainpr/miniconda3/bin:$PATH"
+        fi
+    fi
+    unset __conda_setup
+    # <<< conda initialize <<<
+
+    export PATH=~/miniconda3/bin:$PATH
+    source activate carla_env
+}
