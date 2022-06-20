@@ -3,6 +3,7 @@
 # -------------- Path ----------------------------------------------------------
 
 export PATH="${HOME}/bash_scripts:${PATH}"
+export PATH="${HOME}/bash_scripts/mb:${PATH}" 
 
 # -------- Terminal settings ---------------------------------------------------
 
