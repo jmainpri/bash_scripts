@@ -70,7 +70,7 @@ export VISUAL="emacs -nw"
 export EDITOR="$VISUAL"
 
 # Problem with mac keyboard...
-numlockx off
+# numlockx off
 
 # -------------- Printers (U. Stuttgart)----------------------------------------
 
@@ -105,7 +105,6 @@ fi
 # ------------ DART -----------------------------------------------------------
 
 export BUILD_WITH_DART=1
-
 
 # ------------ MOTION CAPTURE --------------------------------------------------
 
